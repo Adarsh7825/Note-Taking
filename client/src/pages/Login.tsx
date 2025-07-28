@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { authAPI } from '../services/api';
-import blueBg from '../assets/blue-bg.png';
 import { GoogleLogin } from '@react-oauth/google';
+import blueBg from '../assets/blue-bg.png';
+import { Eye, EyeOff } from 'lucide-react';
+import logo from '../assets/logo.png'
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -19,7 +21,6 @@ const Login = () => {
     e.preventDefault();
     setError('');
     setLoading(true);
-
     try {
       const response = await authAPI.login({ email, password });
       login(response.token, response.user);
@@ -50,93 +51,84 @@ const Login = () => {
   };
 
   return (
-    <div className="auth-split-card">
-      <div className="auth-form-section">
-        <div className="auth-logo-placeholder">Logo</div>
-        <div className="auth-header">
-          <h1>Welcome Back</h1>
-          <p>Sign in to your account</p>
+    <div className="h-screen w-screen overflow-hidden flex lg:flex-row flex-col">
+      <div className="flex flex-col justify-center w-full md:w-1/2 px-8 md:px-16 lg:px-24 py-12 bg-white">
+        <div className="text-3xl font-bold text-blue-600 mb-2 lg:absolute lg:top-8 lg:left-8 lg:mb-0">
+          <img src={logo}/>
         </div>
+        <h2 className="pt-20 text-3xl font-bold text-gray-800 mb-1">Sign in</h2>
+        <p className="text-sm text-gray-500 mb-6">Please login to continue to your account.</p>
 
-        {error && <div className="auth-error-message">{error}</div>}
+        {error && <div className="bg-red-100 text-red-600 p-2 rounded mb-4">{error}</div>}
 
-        <form onSubmit={handleSubmit} className="auth-form">
-          <div className="auth-form-group">
-            <label htmlFor="email">Email</label>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Email</label>
             <input
               type="email"
-              id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
               placeholder="Enter your email"
+              className="mt-1 w-full px-3 py-2 border rounded-md shadow-sm focus:ring focus:ring-blue-200"
             />
           </div>
 
-          <div className="auth-form-group">
-            <label htmlFor="password">Password</label>
-            <div className="auth-password-input-wrapper">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Password</label>
+            <div className="relative">
               <input
                 type={showPassword ? 'text' : 'password'}
-                id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 placeholder="Enter your password"
+                className="mt-1 w-full px-3 py-2 border rounded-md shadow-sm focus:ring focus:ring-blue-200"
               />
               <button
                 type="button"
-                className="auth-toggle-password-btn"
-                aria-label={showPassword ? 'Hide password' : 'Show password'}
                 onClick={() => setShowPassword((prev) => !prev)}
-                tabIndex={0}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
               >
-                {showPassword ? (
-                  <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-5 0-9-4-9-7s4-7 9-7c1.13 0 2.21.195 3.225.555M19.07 19.07A9.953 9.953 0 0021 12c0-1.657-.404-3.216-1.12-4.555M15 12a3 3 0 11-6 0 3 3 0 016 0zM3 3l18 18" />
-                  </svg>
-                ) : (
-                  <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm6 0c0 3-4 7-9 7s-9-4-9-7 4-7 9-7 9 4 9 7z" />
-                  </svg>
-                )}
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
             </div>
           </div>
 
           <button
             type="submit"
-            className="auth-button"
             disabled={loading}
+            className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md transition duration-200"
           >
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
 
-        <div className="auth-divider">
-          <span>or</span>
+        <div className="flex items-center my-4">
+          <div className="flex-grow border-t border-gray-300"></div>
+          <span className="mx-3 text-sm text-gray-500">or</span>
+          <div className="flex-grow border-t border-gray-300"></div>
         </div>
 
-        <div className="auth-google-login-wrapper">
+        <div className="mb-2">
           <GoogleLogin
             onSuccess={handleGoogleSuccess}
             onError={handleGoogleError}
             width="100%"
             useOneTap
           />
-          <p style={{ fontSize: '12px', color: '#666', textAlign: 'center', marginTop: '8px' }}>
-            Google OAuth requires configuration. Email + OTP is fully functional.
-          </p>
         </div>
 
-        <div className="auth-signup-link">
-          <p>
-            Don't have an account? <Link to="/signup">Sign up</Link>
-          </p>
-        </div>
+        <p className="text-center text-sm text-gray-600">
+          Don&apos;t have an account?{' '}
+          <Link to="/signup" className="text-blue-600 hover:underline">
+            Sign up
+          </Link>
+        </p>
       </div>
-      <div className="auth-image-section">
-        <img src={blueBg} alt="Blue background" />
+
+      <div className="hidden lg:block flex-1 relative">
+        <img src={blueBg} alt="Blue background" className="relative w-full h-full bg-gradient-to-broverflow-hidden" />
       </div>
     </div>
   );
