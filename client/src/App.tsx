@@ -1,10 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import AuthForm from './pages/AuthForm';
 
 type RouteProps = {
   children: React.ReactNode;
@@ -39,7 +38,7 @@ const AppRoutes = () => {
         path="/login"
         element={
           <PublicRoute>
-            <Login />
+            <AuthForm />
           </PublicRoute>
         }
       />
@@ -47,7 +46,7 @@ const AppRoutes = () => {
         path="/signup"
         element={
           <PublicRoute>
-            <Signup />
+            <AuthForm />
           </PublicRoute>
         }
       />
