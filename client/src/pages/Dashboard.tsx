@@ -23,13 +23,18 @@ const Dashboard = () => {
   const fetchNotes = async () => {
     try {
       const response = await notesAPI.getNotes();
-      setNotes(response.notes);
-    } catch (error:any) {
+      const normalizedNotes = response.notes.map((note: any) => ({
+        ...note,
+        id: Number(note.id),
+      }));
+      setNotes(normalizedNotes);
+    } catch (error: any) {
       setError(error.response?.data?.message || 'Failed to fetch notes');
     } finally {
       setLoading(false);
     }
   };
+  
 
   const handleCreateNote = async () => {
     if (!newNote.title.trim() || !newNote.content.trim()) {
