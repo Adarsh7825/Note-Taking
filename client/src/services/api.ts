@@ -3,6 +3,8 @@ import type {
   AuthResponse,
   ApiResponse,
   LoginCredentials,
+  NoteResponse,
+  NotesResponse,
   SignupData,
   GoogleAuthData,
 } from '../types';

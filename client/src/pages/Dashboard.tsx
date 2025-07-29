@@ -3,14 +3,18 @@ import { useAuth } from '../context/AuthContext';
 import { notesAPI } from '../services/api';
 import Swal from 'sweetalert2';
 import logo from '../assets/logowithoutHD.png'
+import type { Note } from '../types';
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
-  const [notes, setNotes] = useState([]);
+  const [notes, setNotes] = useState<Note[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [showCreateForm, setShowCreateForm] = useState(false);
-  const [newNote, setNewNote] = useState({ title: '', content: '' });
+  const [newNote, setNewNote] = useState<Omit<Note, 'id' | 'createdAt' | 'updatedAt'>>({
+    title: '',
+    content: '',
+  });
 
   useEffect(() => {
     fetchNotes();
@@ -53,7 +57,7 @@ const Dashboard = () => {
         timer: 2000,
         showConfirmButton: false
       });
-    } catch (error) {
+    } catch (error:any) {
       setError(error.response?.data?.message || 'Failed to create note');
       
       // Error message
@@ -66,7 +70,7 @@ const Dashboard = () => {
     }
   };
 
-  const handleDeleteNote = async (id) => {
+  const handleDeleteNote = async (id:number) => {
     const result = await Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -93,7 +97,7 @@ const Dashboard = () => {
         timer: 2000,
         showConfirmButton: false
       });
-    } catch (error) {
+    } catch (error:any) {
       setError(error.response?.data?.message || 'Failed to delete note');
       
       // Error message
@@ -106,7 +110,7 @@ const Dashboard = () => {
     }
   };
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString:any) => {
     return new Date(dateString).toLocaleDateString();
   };
 
@@ -288,7 +292,6 @@ const Dashboard = () => {
                       placeholder="Note content"
                       value={newNote.content}
                       onChange={(e) => setNewNote({ ...newNote, content: e.target.value })}
-                      rows="6"
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                     <div className="flex space-x-3">
