@@ -6,6 +6,14 @@ export interface User {
   avatar?: string;
 }
 
+export interface Note {
+  id: string;
+  title: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface AuthResponse {
   message: string;
   token: string;
@@ -25,9 +33,18 @@ export interface SignupData {
   email: string;
   name: string;
   password: string;
+  dateOfBirth: string;
   otp: string;
 }
 
 export interface GoogleAuthData {
   credential: string;
 } 
+
+export interface NotesResponse {
+  notes: Note[];
+}
+
+export interface NoteResponse {
+  note: Note;
+}
