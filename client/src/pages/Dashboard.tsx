@@ -70,7 +70,7 @@ const Dashboard = () => {
     }
   };
 
-  const handleDeleteNote = async (id:number) => {
+  const handleDeleteNote = async (id: string) => {
     const result = await Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
